@@ -1,0 +1,18 @@
+# 忽略所有文件
+*
+
+# 允许追踪所有子目录，以便 Git 能够进入这些目录查找需要追踪的文件
+!*/
+
+# 仅允许追踪 .py 和 .sh 格式的文件
+!*.py
+!*.sh
+
+# 明确忽略特定的数据集目录，这样即使其中包含了 .py 或 .sh 文件，它们也不会被追踪
+data/
+plankton/
+treeversity/
+benthic/
+
+# 确保追踪 .gitignore 文件本身
+!.gitignore

@@ -166,18 +166,140 @@ python "结合投影_众包_自节点.py" \
 --pr 0.05 --nr 0.5 --epochs 500 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
 --lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
 
+# [2] CIFAR-100 + 500 epochs + EXP8 only (soft propagation, no EXP6)
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR100 \
+--out topology_daes \
+--exp_name "三方共识更新_exp9_knn1_softprop/pr0.05nr0.5e500top_top_hl15_exp8_knn1_softprop_lsr0.1geofuse23" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.5 --epochs 500 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.1 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0 --enable_knn1_model_fuse --seeds 2 3
+
+# [3] CIFAR-100 + 500 epochs + EXP6 + EXP8 (both enabled)
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR100 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.5e500top_top_hl15_exp6+8_geofuse+softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.5 --epochs 500 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0
+
+# [4] CIFAR-100 + 100 epochs + EXP6 only (fast iteration)
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR100 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.5e100top_top_hl15_exp6_knn1_geofuse" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.5 --epochs 100 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+
+# [5] CIFAR-100 + 100 epochs + EXP8 only
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR100 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.5e100top_top_hl15_exp8_knn1_softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.5 --epochs 100 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0 
+
+# [6] CIFAR-100 + 100 epochs + EXP6 + EXP8
+python "三方共识更新_exp10_knn1_softprop_topo_daes_结合.py" \
+--dataset CIFAR100 \
+--out topology_daes \
+--exp_name "三方共识更新_exp10_knn1_softprop_topo_daes_结合/pr0.05nr0.5e500topdaes_topdaes_hl15_geofuse+softprop23lsr0.5" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.5 --epochs 500 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.5 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0 --enable_knn1_model_fuse --seeds 2 3
+
 # ============================================================================
 # CIFAR-10 实验 (对称噪声)
 # ============================================================================
 
 # [7] CIFAR-10 + 500 epochs + EXP6 only
-python "结合投影_众包_自节点_加权和.py" \
+python "结合投影_众包_自节点.py" \
 --dataset CIFAR10 \
 --out topology_daes \
---exp_name "结合投影_众包_自节点_加权和/CIFAR10/pr0.5nr0.3e100topdaes_topdaes_hl15_kh1_fuse" \
+--exp_name "结合投影_众包_自节点/CIFAR10/pr0.5nr0.3e100topdaes_topdaes_hl15_kh1_fuse" \
 --pr 0.5 --nr 0.3 --epochs 100 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
---lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 --knn_heads 1 --seeds 1 2 3  --enable_knn1_model_fuse --fusion_mode weighted_sum\
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 --knn_heads 1 --seeds 1 2 3  --enable_knn1_model_fuse \
 
+# [8] CIFAR-10 + 500 epochs + EXP8 only
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.4e500top_top_hl15_exp8_knn1_softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.4 --epochs 500 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0
+
+# [9] CIFAR-10 + 500 epochs + EXP6 + EXP8
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.4e500top_top_hl15_exp6+8_geofuse+softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.4 --epochs 500 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0
+
+# [10] CIFAR-10 + 100 epochs + EXP6 only
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.4e100top_top_hl15_exp6_knn1_geofuse" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.4 --epochs 100 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+
+# [11] CIFAR-10 + 100 epochs + EXP8 only
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新/pr0.05nr0.4e100top_top_hl15_exp8_knn1_softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.05 --nr 0.4 --epochs 100 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0
+
+# [12] CIFAR-10 + 100 epochs + EXP6 + EXP8
+python "三方共识更新_exp9_knn1_softprop.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新/ cifar10pr0.5nr0.3e300top_top_hl15_exp6+8_geofuse+softprop" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.5 --nr 0.3 --epochs 300 --sim_mode_1 topology --sim_mode_2 topology \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0
+
+
+
+python "三方共识更新_exp10_knn1_softprop_topo_daes_结合.py" \
+--dataset CIFAR10 \
+--out topology_daes \
+--exp_name "三方共识更新_exp10_knn1_softprop_topo_daes_结合/ cifar10pr0.5nr0.3e100topdaes_topdaes_geofuse+softprop_lsr0.2" \
+--enable_dual_source_refinement \
+--enable_dynamic_sampling \
+--pr 0.5 --nr 0.3 --epochs 100 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
+--lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
+--enable_knn1_soft_prop --knn1_soft_prop_max_w 1.0 --seeds 1 2 3 \
+    --knn1_soft_prop_max_w 1.0 \
+    --knn1_soft_prop_eps 1e-8 --enable_knn1_model_fuse
+==============================================================================
 """
 
 
@@ -399,11 +521,7 @@ def parse_args():
 
     # [新增] 消融:禁用一致性正则化
     parser.add_argument('--enable_knn1_model_fuse', action='store_true',
-                        help='[EXP9] Enable model-geometry fusion with KNN1 scores before candidate projection.')
-    
-    parser.add_argument('--fusion_mode', type=str, default='weighted_sum', 
-                        choices=['geometric', 'weighted_sum'],
-                        help='Fusion mode for model prediction and KNN scores (default: weighted_sum)')
+                        help='[EXP9] Enable model-geometry fusion with KNN1 scores (log-space) before candidate projection.')
 
     return parser.parse_args()
 # (在 Section 2: 数据处理与模型)
@@ -1027,6 +1145,305 @@ def get_topology_daes_affinity(raw_D, neighbors_indices, current_soft_labels, ar
     return final_neighbor_weights
 
 
+# def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, features, epoch, 
+#                                             state_manager, model_preds=None, proto_manager=None):
+#     """
+#     博士级增强版：双源感知可靠集筛选 (支持众包先验软投影与 PLL 硬掩码分离)
+#     """
+#     N = features.shape[0]
+#     dataset = trainloader.dataset
+#     eps_stable = 1e-8
+    
+#     # 获取原始静态约束 (PLL 硬掩码)
+#     if hasattr(dataset, 'original_soft_labels'):
+#         static_cand_mask = torch.tensor(dataset.original_soft_labels, device=device, dtype=torch.float64)
+#     else:
+#         static_cand_mask = torch.tensor(dataset.soft_labels, device=device, dtype=torch.float64)
+
+#     # 🌟 [新增] 获取众包真实权重先验 (Crowdsource Soft Prior)
+#     is_crowd = getattr(args, 'dataset', '') in ['Treeversity', 'Benthic', 'Plankton']
+#     crowd_prior = None
+#     if is_crowd and hasattr(dataset, 'weights'):
+#         crowd_prior = torch.tensor(dataset.weights, device=device, dtype=torch.float32) + eps_stable
+
+#     # 获取当前动态起点与干净标签
+#     current_fixed_labels = torch.tensor(dataset.soft_labels, device=device).float()
+#     clean_labels = torch.tensor(dataset.clean_labels, device=device, dtype=torch.long)
+
+#     # ==============================================================================
+#     # 核心辅助逻辑:双源统一筛选闸门
+#     # ==============================================================================
+#     def _filter_logic(soft_probs):
+#         prob_temp = torch.clamp(soft_probs, min=1e-6, max=1-1e-6)
+#         discrepancy = -torch.log(prob_temp)
+#         max_p, max_idx = soft_probs.max(dim=1)
+        
+#         # 准入判定：无论是硬投影还是软投影，最终预测的最大值必须在原分布的非零支撑集内
+#         in_static_cand = (static_cand_mask.gather(1, max_idx.unsqueeze(1)).squeeze(1) > 0)
+        
+#         total_cand_mask = in_static_cand
+#         rel_mask = torch.zeros(N, device=device)
+#         counts = torch.bincount(max_idx[total_cand_mask], minlength=args.num_classes).double()
+#         limit = torch.quantile(counts, args.delta) if counts.numel() > 0 else 0
+        
+#         for i in range(args.num_classes):
+#             idx_c_mask = total_cand_mask & (max_idx == i)
+#             if idx_c_mask.sum() == 0: continue
+            
+#             k_val = min(limit.item(), idx_c_mask.sum().float().item())
+#             if k_val < 1: continue
+            
+#             _, top_idx = torch.topk(discrepancy[idx_c_mask, i], k=int(k_val), largest=False)
+#             rel_mask[idx_c_mask.nonzero().squeeze(1)[top_idx]] = 1.0
+            
+#         n_selected = rel_mask.sum().item()
+#         acc = (max_idx[rel_mask.bool()] == clean_labels[rel_mask.bool()]).float().mean().item() if n_selected > 0 else 0.0
+#         return rel_mask, max_idx, acc, n_selected
+
+#     # 1. 拓扑构建
+#     D_mh, neighbors_mh = knn_search_pytorch_chunked(features, args.k_val, num_heads=args.knn_heads)
+#     raw_sim = F.relu(D_mh).float()
+
+#     with torch.no_grad():
+#         start_pred = current_fixed_labels.argmax(dim=1)
+#         acc_start = (start_pred == clean_labels).float().mean().item()
+#         size_start = (static_cand_mask.gather(1, start_pred.unsqueeze(1)).squeeze(1) == 1.0).sum().item()
+
+#     curr_soft_out = current_fixed_labels.clone()
+#     iterations = 2
+    
+#     logger.info(f"\n{'='*80}")
+#     logger.info(f"🚀 [Epoch {epoch}] Reliable Selection - Stage Breakdown")
+#     logger.info(f"{'='*80}")
+
+#     with torch.no_grad():
+#         mask_init, pred_init, acc_init, size_init = _filter_logic(curr_soft_out)
+#         overall_pred_init = curr_soft_out.argmax(dim=1)
+#         overall_acc_init = (overall_pred_init == clean_labels).float().mean().item()
+#         logger.info(f"📊 [Stage 0] Initial (Before Propagation)")
+#         logger.info(f"   ├─ Selected: {int(size_init)} samples | Acc: {acc_init*100:.2f}% | Overall Acc: {overall_acc_init*100:.2f}%")
+
+#     # for i in range(iterations):
+#     #     if i == 0:
+#     #         propagation_input = curr_soft_out
+#     #     else:
+#     #         # ==============================================================================
+#     #         # 第二轮及以后 [EXP9]: 融合与投影逻辑
+#     #         # ==============================================================================
+#     #         eps = float(getattr(args, 'knn1_soft_prop_eps', 1e-8))
+#     #         max_w = float(getattr(args, 'knn1_soft_prop_max_w', 1.0))
+#     #         denom = float(max(getattr(args, 'epochs', 1) - 1, 1))
+#     #         w_model = max_w * float(epoch) / denom
+#     #         w_model = float(np.clip(w_model, 0.0, max_w))
+
+#     #         knn1_raw = curr_soft_out
+
+#     #         if getattr(args, 'enable_knn1_model_fuse', False) and (model_preds is not None):
+#     #             # [修改点] 包含自身
+#     #             neighbor_idx = neighbors_mh
+#     #             w_raw = raw_sim
+#     #             w_norm = w_raw / (w_raw.sum(dim=1, keepdim=True) + eps)
+#     #             neighbor_model_probs = model_preds[neighbor_idx]
+#     #             geo = torch.einsum('nk,nkc->nc', w_norm, neighbor_model_probs)
+#     #             geo = geo / (geo.sum(dim=1, keepdim=True) + eps)
+#     #             # ... 下方逻辑不变
+
+#     #             log_knn = torch.log(knn1_raw + eps)
+#     #             log_geo = torch.log(geo + eps)
+
+#     #             # 🌟 双分支投影融合逻辑
+#     #             if crowd_prior is not None:
+#     #                 # [众包分支]: 引入软先验进行贝叶斯更新
+#     #                 # log_fused = log_knn + w_model * log_geo + torch.log(crowd_prior)
+#     #                 log_fused = log_knn + w_model * log_geo
+#     #                 # log_fused = log_knn+ torch.log(crowd_prior)
+#     #                 log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#     #                 base_dist = torch.exp(log_fused)
+#     #             else:
+#     #                 # [PLL分支]: 维持硬掩码截断
+#     #                 cand = static_cand_mask.float()
+#     #                 log_fused = log_knn + w_model * log_geo
+#     #                 log_fused = torch.where(cand > 0, log_fused, torch.full_like(log_fused, -1e9))
+#     #                 log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#     #                 base_dist = torch.exp(log_fused)
+#     #         else:
+#     #             if crowd_prior is not None:
+#     #                 base_dist = knn1_raw * crowd_prior
+#     #             else:
+#     #                 base_dist = knn1_raw * static_cand_mask.float()
+
+#     #         base_dist = base_dist / (base_dist.sum(dim=1, keepdim=True) + eps)
+
+#     #         if getattr(args, 'enable_knn1_soft_prop', False):
+#     #             propagation_input = base_dist
+#     #         else:
+#     #             hard_preds = base_dist.argmax(dim=1)
+#     #             propagation_input = F.one_hot(hard_preds, num_classes=args.num_classes).float()
+
+#     #     mode = args.sim_mode_1 if i == 0 else args.sim_mode_2
+#     #     refined_sim = get_weight_matrix(mode, raw_sim, neighbors_mh, propagation_input, args)
+        
+#     #     # [修改点] 包含自身
+#     #     voting_weights = refined_sim
+#     #     neighbor_vals = propagation_input[neighbors_mh]
+#     #     weighted_votes = torch.einsum('nk,nkc->nc', voting_weights, neighbor_vals)
+#     #     curr_soft_out = F.softmax(weighted_votes, dim=1)
+#     #     if i == 0:
+#     #         with torch.no_grad():
+#     #             mask_knn1, pred_knn1, acc_knn1, size_knn1 = _filter_logic(curr_soft_out)
+#     #             overall_pred_knn1 = curr_soft_out.argmax(dim=1)
+#     #             overall_acc_knn1 = (overall_pred_knn1 == clean_labels).float().mean().item()
+#     #             logger.info(f"📊 [Stage 1] After 1st Propagation (KNN only)")
+#     #             logger.info(f"   ├─ Selected: {int(size_knn1)} samples | Acc: {acc_knn1*100:.2f}% | Overall Acc: {overall_acc_knn1*100:.2f}%")
+
+#     #     # ==============================================================================
+#     #     # 第一轮后 [EXP6]: 几何融合与双分支投影
+#     #     # ==============================================================================
+#     #     if i == 0 and getattr(args, 'enable_knn1_geo_fuse', False) and (model_preds is not None):
+#     #         eps = float(getattr(args, 'knn1_geo_fuse_eps', 1e-8))
+#     #         max_w = float(getattr(args, 'knn1_geo_fuse_max_w', 1.0))
+#     #         denom = float(max(getattr(args, 'epochs', 1) - 1, 1))
+#     #         w_model = max_w * float(epoch) / denom
+#     #         w_model = float(np.clip(w_model, 0.0, max_w))
+
+#     #         knn1 = curr_soft_out
+            
+#     #         # [修改点] 包含自身
+#     #         neighbor_idx = neighbors_mh
+#     #         w_raw = raw_sim
+#     #         w_norm = w_raw / (w_raw.sum(dim=1, keepdim=True) + eps)
+#     #         neighbor_model_probs = model_preds[neighbor_idx]
+#     #         geo = torch.einsum('nk,nkc->nc', w_norm, neighbor_model_probs)
+#     #         geo = geo / (geo.sum(dim=1, keepdim=True) + eps)
+
+#     #         log_knn = torch.log(knn1 + eps)
+#     #         log_geo = torch.log(geo + eps)
+
+#     #         # 🌟 双分支投影融合逻辑
+#     #         if crowd_prior is not None:
+#     #             log_fused = log_knn + w_model * log_geo + torch.log(crowd_prior)
+#     #             log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#     #             fused = torch.exp(log_fused)
+#     #         else:
+#     #             cand = static_cand_mask.float()
+#     #             log_fused = log_knn + w_model * log_geo
+#     #             log_fused = torch.where(cand > 0, log_fused, torch.full_like(log_fused, -1e9))
+#     #             log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#     #             fused = torch.exp(log_fused)
+
+#     #         fused = fused / (fused.sum(dim=1, keepdim=True) + eps)
+#     #         curr_soft_out = fused
+
+#     #         with torch.no_grad():
+#     #             mask_exp6, pred_exp6, acc_exp6, size_exp6 = _filter_logic(curr_soft_out)
+#     #             overall_pred_exp6 = curr_soft_out.argmax(dim=1)
+#     #             overall_acc_exp6 = (overall_pred_exp6 == clean_labels).float().mean().item()
+#     #             logger.info(f"📊 [Stage 1.5] After EXP6 Fusion (KNN1 + Model Geo)")
+#     #             logger.info(f"   ├─ Selected: {int(size_exp6)} samples | Acc: {acc_exp6*100:.2f}% | Overall Acc: {overall_acc_exp6*100:.2f}%")
+
+#     for i in range(2): # 限制为两次迭代
+#         if i == 0:
+#             propagation_input = curr_soft_out
+#         else:
+#             # ==============================================================================
+#             # 第二次迭代：融合与投影逻辑
+#             # ==============================================================================
+#             eps = float(getattr(args, 'knn1_soft_prop_eps', 1e-8))
+#             max_w = float(getattr(args, 'knn1_soft_prop_max_w', 1.0))
+#             denom = float(max(getattr(args, 'epochs', 1) - 1, 1))
+#             w_model = max_w * float(epoch) / denom
+#             w_model = float(np.clip(w_model, 0.0, max_w))
+
+#             knn1_raw = curr_soft_out
+
+#             if getattr(args, 'enable_knn1_model_fuse', False) and (model_preds is not None):
+#                 neighbor_idx = neighbors_mh
+#                 w_raw = raw_sim
+#                 w_norm = w_raw / (w_raw.sum(dim=1, keepdim=True) + eps)
+#                 neighbor_model_probs = model_preds[neighbor_idx]
+#                 geo = torch.einsum('nk,nkc->nc', w_norm, neighbor_model_probs)
+#                 geo = geo / (geo.sum(dim=1, keepdim=True) + eps)
+
+#                 log_knn = torch.log(knn1_raw + eps)
+#                 log_geo = torch.log(geo + eps)
+
+#                 if crowd_prior is not None:
+#                     # [众包分支]: 结合先验进行软更新
+#                     log_fused = log_knn + w_model * log_geo
+#                     log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#                     base_dist = torch.exp(log_fused)
+#                 else:
+#                     # [PLL分支]: 候选集截断
+#                     cand = static_cand_mask.float()
+#                     log_fused = log_knn + w_model * log_geo
+#                     log_fused = torch.where(cand > 0, log_fused, torch.full_like(log_fused, -1e9))
+#                     log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+#                     base_dist = torch.exp(log_fused)
+#             else:
+#                 if crowd_prior is not None:
+#                     base_dist = knn1_raw * crowd_prior
+#                 else:
+#                     base_dist = knn1_raw * static_cand_mask.float()
+
+#             # 再次归一化
+#             base_dist = base_dist / (base_dist.sum(dim=1, keepdim=True) + eps)
+            
+#             # 第二次迭代的输入
+#             propagation_input = base_dist
+
+#         mode = args.sim_mode_1 if i == 0 else args.sim_mode_2
+#         refined_sim = get_weight_matrix(mode, raw_sim, neighbors_mh, propagation_input, args)
+        
+#         voting_weights = refined_sim
+#         neighbor_vals = propagation_input[neighbors_mh]
+#         weighted_votes = torch.einsum('nk,nkc->nc', voting_weights, neighbor_vals)
+#         curr_soft_out = F.softmax(weighted_votes, dim=1)
+
+#     # curr_soft_out (第二次迭代的输出) 现可用于实际可靠集筛选
+
+#     mask_2, pred_2, acc_rel_2, size_rel_2 = _filter_logic(curr_soft_out)
+#     mask_2 = mask_2.float()
+    
+#     overall_pred_final = curr_soft_out.argmax(dim=1)
+#     overall_acc_final = (overall_pred_final == clean_labels).float().mean().item()
+    
+#     logger.info(f"📊 [Stage 2] Final Selection (After 2nd Propagation)")
+#     logger.info(f"   ├─ Selected: {int(size_rel_2)} samples | Acc: {acc_rel_2*100:.2f}% | Overall Acc: {overall_acc_final*100:.2f}%")
+#     logger.info(f"{'='*80}\n")
+    
+#     with torch.no_grad():
+#         target_unrel_mask = (~mask_2.bool())
+        
+#         # [修改点] 注意展开维度由 args.k_val 改为 args.k_val + 1，以匹配包含自身后的维度
+#         mask_expanded = mask_2.view(-1, 1).expand(-1, args.k_val + 1).float()
+#         w_pruned = raw_sim * torch.gather(mask_expanded, 0, neighbors_mh)
+        
+#         w_p_sum = w_pruned.sum(dim=1)
+#         w_p_norm = w_pruned / (w_p_sum.unsqueeze(1) + 1e-12)
+#         soft_out_pruned = torch.sum(F.embedding(neighbors_mh, curr_soft_out) * w_p_norm.view(N, -1, 1), dim=1)
+#         pruned_pl = soft_out_pruned.argmax(dim=1)
+
+#     model_hard_labels = model_preds.argmax(dim=1) 
+#     neighbor_model_labels = model_hard_labels[neighbors_mh] # [修改点]
+#     neighbor_model_onehot = F.one_hot(neighbor_model_labels, num_classes=args.num_classes).float()
+    
+#     weights = raw_sim.unsqueeze(-1) # [修改点] 原为 raw_sim[:, 1:].unsqueeze(-1)
+#     geo_soft_out = torch.sum(neighbor_model_onehot * weights, dim=1)
+#     model_geo_pl = geo_soft_out.argmax(dim=1)
+
+#     if proto_manager is not None:
+#         _, proto_pl_all = proto_manager.predict(features)
+#     else:
+#         proto_pl_all = None
+
+#     state_manager.update_history(mask_2, pruned_pl, model_geo_pl, proto_pl=proto_pl_all)
+
+#     # ==============================================================================
+#     # 日志输出与返回部分保持不变
+#     # ==============================================================================
+#     return mask_2.float(), pred_2, pred_2, pred_2, curr_soft_out.float()
+
+
 
 import torch
 import torch.nn.functional as F
@@ -1129,6 +1546,9 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
     # ==============================================================================
     eps = float(getattr(args, 'knn1_soft_prop_eps', 1e-8))
     max_w = float(getattr(args, 'knn1_soft_prop_max_w', 1.0))
+    denom = float(max(getattr(args, 'epochs', 1) - 1, 1))
+    w_model = max_w * float(epoch) / denom
+    w_model = float(np.clip(w_model, 0.0, max_w))
 
     knn1_raw = curr_soft_out
 
@@ -1140,48 +1560,30 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
         geo = torch.einsum('nk,nkc->nc', w_norm, neighbor_model_probs)
         geo = geo / (geo.sum(dim=1, keepdim=True) + eps)
 
-        # [Branch3] Agreement-based Global Curriculum
-        # 废除 epoch-ramp，改用全局 KNN-Model 共识率驱动权重
-        global_agreement = (model_preds.argmax(1) == knn1_raw.argmax(1)).float().mean().item()
-        consensus_power = float(getattr(args, 'consensus_power', 2.0))
-        w_model = float(np.clip(max_w * (global_agreement ** consensus_power), 0.0, max_w))
+        log_knn = torch.log(knn1_raw + eps)
+        log_geo = torch.log(geo + eps)
 
-        fusion_mode = getattr(args, 'fusion_mode', 'weighted_sum')
-        if fusion_mode == 'geometric':
-            log_knn = torch.log(knn1_raw + eps)
-            log_geo = torch.log(geo + eps)
-            log_fused_temp = log_knn + w_model * log_geo
-            soft_model_fused = F.softmax(log_fused_temp, dim=1)
-        else: # weighted_sum
-            # Branch3: KNN权重 1，模型权重由全局共识率自适应
-            soft_model_fused = knn1_raw + w_model * geo
-            soft_model_fused = soft_model_fused / (soft_model_fused.sum(dim=1, keepdim=True) + eps)
-
+        log_fused_temp = log_knn + w_model * log_geo
         with torch.no_grad():
+            soft_model_fused = F.softmax(log_fused_temp, dim=1)
             mask_fuse, pred_fuse, acc_fuse, size_fuse = _filter_logic(soft_model_fused)
             overall_pred_fuse = soft_model_fused.argmax(dim=1)
             overall_acc_fuse = (overall_pred_fuse == clean_labels).float().mean().item()
-            logger.info(f"📊 [Stage 1.5] After Model Fusion ({fusion_mode})")
+            logger.info(f"📊 [Stage 1.5] After Model Fusion")
             logger.info(f"   ├─ Selected: {int(size_fuse)} samples | Acc: {acc_fuse*100:.2f}% | Overall Acc: {overall_acc_fuse*100:.2f}%")
 
         if crowd_prior is not None:
             # [众包分支]: 结合先验进行软更新
-            if fusion_mode == 'geometric':
-                log_fused = log_knn + w_model * log_geo
-                log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
-                base_dist = torch.exp(log_fused)
-            else:
-                base_dist = soft_model_fused * crowd_prior
+            log_fused = log_knn + w_model * log_geo
+            log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+            base_dist = torch.exp(log_fused)
         else:
             # [PLL分支]: 候选集截断
             cand = static_cand_mask.float()
-            if fusion_mode == 'geometric':
-                log_fused = log_knn + w_model * log_geo
-                log_fused = torch.where(cand > 0, log_fused, torch.full_like(log_fused, -1e9))
-                log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
-                base_dist = torch.exp(log_fused)
-            else:
-                base_dist = soft_model_fused * cand
+            log_fused = log_knn + w_model * log_geo
+            log_fused = torch.where(cand > 0, log_fused, torch.full_like(log_fused, -1e9))
+            log_fused = log_fused - log_fused.max(dim=1, keepdim=True)[0]
+            base_dist = torch.exp(log_fused)
     else:
         if crowd_prior is not None:
             base_dist = knn1_raw * crowd_prior
@@ -1201,7 +1603,17 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
 
     refined_sim_2 = get_weight_matrix(args.sim_mode_2, raw_sim, neighbors_mh, propagation_input_2, args)
     
-    voting_weights_2 = refined_sim_2
+    # --- 新增：剔除自身节点逻辑 ---
+    # 构建自身节点的 Mask：匹配 neighbor 索引是否等于当前样本自身索引
+    self_mask = (neighbors_mh == torch.arange(N, device=device).unsqueeze(1))
+    
+    # 将自身节点的权重置为 0
+    voting_weights_2 = refined_sim_2.masked_fill(self_mask, 0.0)
+    
+    # 重新归一化剩余的邻居节点权重（防止全 0 导致的除零错误）
+    voting_weights_2 = voting_weights_2 / (voting_weights_2.sum(dim=1, keepdim=True) + eps)
+    # ---------------------------
+
     neighbor_vals_2 = propagation_input_2[neighbors_mh]
     weighted_votes_2 = torch.einsum('nk,nkc->nc', voting_weights_2, neighbor_vals_2)
     curr_soft_out = F.softmax(weighted_votes_2, dim=1)
@@ -1245,8 +1657,6 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
     state_manager.update_history(mask_final, pruned_pl, model_geo_pl, proto_pl=proto_pl_all)
 
     return mask_final.float(), pred_final, pred_final, pred_final, curr_soft_out.float()
-
-
 @torch.no_grad()
 def get_features(encoder, classifier, loader, device):
     encoder.eval(); classifier.eval(); all_features, all_predictions, all_indices = [], [], []
