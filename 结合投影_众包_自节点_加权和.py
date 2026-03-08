@@ -521,6 +521,10 @@ def parse_args():
     parser.add_argument('--enable_knn1_model_fuse', action='store_true',
                         help='[EXP9] Enable model-geometry fusion with KNN1 scores before candidate projection.')
     
+    # [新增] 控制熵门控衰减强度的参数
+    parser.add_argument('--entropy_gamma', type=float, default=5.0, 
+                        help='Gamma for sample-wise entropy gating. Higher means stricter penalty on uncertain models.')
+
     parser.add_argument('--fusion_mode', type=str, default='weighted_sum', 
                         choices=['geometric', 'weighted_sum'],
                         help='Fusion mode for model prediction and KNN scores (default: weighted_sum)')
