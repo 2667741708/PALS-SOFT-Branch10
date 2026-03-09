@@ -8,8 +8,18 @@
 !*.py
 !*.sh
 
-# 明确忽略特定的数据集目录，这样即使其中包含了 .py 或 .sh 文件，它们也不会被追踪
-data/
+# 明确忽略特定的数据集目录和非脚本文件
+data/Benthic/
+data/cifar-*/
+data/cub200/
+data/CUB_200_2011/
+data/Plankton/
+data/Treeversity*/
+data/data/
+data/*.tar.gz
+data/attributes.txt
+
+# 忽略其他特定平台或非源代码文件夹
 plankton/
 treeversity/
 benthic/
