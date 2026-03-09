@@ -1024,7 +1024,7 @@ def get_topology_daes_affinity(raw_D, neighbors_indices, current_soft_labels, ar
     neighbor_reliabilities = F.embedding(neighbors_indices, reliability_scores.unsqueeze(1)).squeeze(-1)
     final_neighbor_weights = daes_weights * neighbor_reliabilities
     
-    return final_neighbor_weights
+    return final_neighbor_weights, reliability_scores
 
 
 
@@ -1110,12 +1110,21 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
     # ==============================================================================
     propagation_input_1 = curr_soft_out
     
-    refined_sim_1 = get_weight_matrix(args.sim_mode_1, raw_sim, neighbors_mh, propagation_input_1, args)
+    refined_sim_1, rel_scores_1 = get_weight_matrix(args.sim_mode_1, raw_sim, neighbors_mh, propagation_input_1, args)
     
     voting_weights_1 = refined_sim_1
     neighbor_vals_1 = propagation_input_1[neighbors_mh]
     weighted_votes_1 = torch.einsum('nk,nkc->nc', voting_weights_1, neighbor_vals_1)
-    curr_soft_out = F.softmax(weighted_votes_1, dim=1)
+    
+    # --- CARP (Confidence-Aware Residual Prior) Stage 1 ---
+    # F.softmax collapses to uniform when weights are tiny. We rescue it using the prior.
+    knn_prob_1 = F.softmax(weighted_votes_1, dim=1)
+    if rel_scores_1 is not None:
+        gamma_1 = rel_scores_1.unsqueeze(1) # [N, 1]
+        prior_dist_1 = propagation_input_1  # The static input (e.g. static_cand_mask / crowd weights)
+        curr_soft_out = (gamma_1 * knn_prob_1) + ((1.0 - gamma_1) * prior_dist_1)
+    else:
+        curr_soft_out = knn_prob_1
 
     with torch.no_grad():
         mask_st1, pred_st1, acc_st1, size_st1 = _filter_logic(curr_soft_out)
@@ -1196,12 +1205,20 @@ def reliable_pseudolabel_selection_advanced(logger, args, device, trainloader, f
         logger.info(f"📊 [Stage 1.8] After Prior Fusion")
         logger.info(f"   ├─ Selected: {int(size_prior)} samples | Acc: {acc_prior*100:.2f}% | Overall Acc: {overall_acc_prior*100:.2f}%")
 
-    refined_sim_2 = get_weight_matrix(args.sim_mode_2, raw_sim, neighbors_mh, propagation_input_2, args)
+    refined_sim_2, rel_scores_2 = get_weight_matrix(args.sim_mode_2, raw_sim, neighbors_mh, propagation_input_2, args)
     
     voting_weights_2 = refined_sim_2
     neighbor_vals_2 = propagation_input_2[neighbors_mh]
     weighted_votes_2 = torch.einsum('nk,nkc->nc', voting_weights_2, neighbor_vals_2)
-    curr_soft_out = F.softmax(weighted_votes_2, dim=1)
+    
+    # --- CARP (Confidence-Aware Residual Prior) Stage 2 ---
+    knn_prob_2 = F.softmax(weighted_votes_2, dim=1)
+    if rel_scores_2 is not None:
+        gamma_2 = rel_scores_2.unsqueeze(1)
+        prior_dist_2 = propagation_input_2 # The projected prior
+        curr_soft_out = (gamma_2 * knn_prob_2) + ((1.0 - gamma_2) * prior_dist_2)
+    else:
+        curr_soft_out = knn_prob_2
 
     # ==============================================================================
     # 最终的可靠集筛选和状态更新
@@ -1335,23 +1352,24 @@ def get_weight_matrix(mode, raw_D, neighbors_indices, ref_soft_labels, args):
     """
     修改点：直接处理完整的 [N, K+1] 矩阵，不再切片剔除自身节点。
     """
+    reliability_scores = None # 默认没有算的时候返回 None
     if mode == 'daes':
         refined_D = get_adaptive_affinity_matrix(raw_D, neighbors_indices, ref_soft_labels, args)
     elif mode == 'topology':
-        refined_D, _ = get_topology_guided_affinity(
+        refined_D, reliability_scores = get_topology_guided_affinity(
             raw_D, neighbors_indices, ref_soft_labels, args.num_classes,
             rel_mode=getattr(args, 'topology_rel_mode', 'masked_entropy'),
             gamma=getattr(args, 'topology_rel_gamma', 2.0),
             eps=getattr(args, 'topology_rel_eps', 1e-12),
         )
     elif mode == 'topology_daes':
-        refined_D = get_topology_daes_affinity(raw_D, neighbors_indices, ref_soft_labels, args)
+        refined_D, reliability_scores = get_topology_daes_affinity(raw_D, neighbors_indices, ref_soft_labels, args)
     elif mode == 'exp':
         refined_D = torch.exp(raw_D / 0.1)
     else: # 'linear' or 'none'
         refined_D = raw_D
         
-    return refined_D
+    return refined_D, reliability_scores
 
 
 def train_unified_single_stream(args, encoder, classifier, device,
