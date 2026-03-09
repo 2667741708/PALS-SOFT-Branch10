@@ -405,6 +405,11 @@ def parse_args():
                         choices=['geometric', 'weighted_sum'],
                         help='Fusion mode for model prediction and KNN scores (default: weighted_sum)')
 
+    # Added missing args from shell script
+    parser.add_argument('--enable_dual_source_refinement', action='store_true')
+    parser.add_argument('--enable_dynamic_sampling', action='store_true')
+    parser.add_argument('--entropy_gamma', type=float, default=5.0)
+
     return parser.parse_args()
 # (在 Section 2: 数据处理与模型)
 

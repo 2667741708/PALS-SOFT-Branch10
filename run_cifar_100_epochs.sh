@@ -18,17 +18,18 @@ $PYTHON "$SCRIPT" \
     --pr 0.05 --nr 0.5 --epochs 500 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
     --lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
     --fusion_mode weighted_sum --consensus_power 2.0 \
-    --cuda_dev $GPU
+    --cuda_dev 1 &
 
-echo "=== [GPU$GPU] Branch3: CIFAR10 (100 epochs, Global Curriculum) ==="
+echo "=== [GPU$GPU] Branch3: CIFAR10 (500 epochs, Global Curriculum) ==="
 $PYTHON "$SCRIPT" \
     --dataset CIFAR10 \
     --out topology_daes \
-    --exp_name "Branch3/CIFAR10/pr0.5nr0.3e100topdaes_topdaes_hl15_kh1_fuse" \
-    --pr 0.5 --nr 0.3 --epochs 100 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
+    --exp_name "Branch3/CIFAR10/pr0.5nr0.3e500topdaes_topdaes_hl15_kh1_fuse" \
+    --pr 0.5 --nr 0.3 --epochs 500 --sim_mode_1 topology_daes --sim_mode_2 topology_daes \
     --lr 0.1 --wd 1e-3 --history_len 15 --k_val 15 --lsr 0.0 \
     --knn_heads 1 --seeds 1 2 3 --enable_knn1_model_fuse \
     --fusion_mode weighted_sum --consensus_power 2.0 \
-    --cuda_dev $GPU
+    --cuda_dev 0 &
 
+wait
 echo "=== [GPU$GPU] Branch3: All experiments done! ==="
